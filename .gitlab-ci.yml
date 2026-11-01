@@ -1,0 +1,21 @@
+image: python:3.11-slim
+
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script:
+    - python -m compileall -q main.py seat_test.py
+
+test:
+  stage: test
+  before_script:
+    - python -m pip install --no-cache-dir pytest
+  script:
+    - python -m pytest -v --junitxml=report.xml
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
